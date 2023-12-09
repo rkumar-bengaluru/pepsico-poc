@@ -2,18 +2,20 @@ package com.pepsico.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * CreateMenu
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 public class CreateMenu   {
   @JsonProperty("name")
   private String name;
@@ -34,7 +36,7 @@ public class CreateMenu   {
    * Name of the menu
    * @return name
   */
-
+  @Schema(example = "breakfast", description  = "Name of the menu")
 
 
   public String getName() {
@@ -54,7 +56,7 @@ public class CreateMenu   {
    * Full description of the menu
    * @return description
   */
-
+  @Schema(example = "breakfast menu for XYZ", description = "Full description of the menu")
 
 
   public String getDescription() {
@@ -82,7 +84,7 @@ public class CreateMenu   {
    * Get menuitems
    * @return menuitems
   */
-
+  @Schema(description = "")
 
   @Valid
 

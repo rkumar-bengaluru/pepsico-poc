@@ -3,16 +3,15 @@ package com.pepsico.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * CreateMenuItem
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 public class CreateMenuItem   {
   @JsonProperty("name")
   private String name;
@@ -35,7 +34,7 @@ public class CreateMenuItem   {
    * Name of the menu item
    * @return name
   */
-
+  @Schema(example = "Pepsi Beverage", description = "Name of the menu item")
 
 
   public String getName() {
@@ -55,7 +54,8 @@ public class CreateMenuItem   {
    * Full description of the menu item
    * @return description
   */
-  
+  @Schema(example = "Ice Cold 16 oz. Diet Pepsi Beverage", description = "Full description of the menu item")
+
 
   public String getDescription() {
     return description;
@@ -74,7 +74,8 @@ public class CreateMenuItem   {
    * Currency for the specified pice
    * @return currenncy
   */
-  
+  @Schema(example = "USD, CAD, etc.", description = "Currency for the specified pice")
+
 
   public String getCurrenncy() {
     return currenncy;
@@ -93,7 +94,8 @@ public class CreateMenuItem   {
    * up to 2 decimal places, e.g. 4.25
    * @return price
   */
-  
+  @Schema(example = "4.25", description  = "up to 2 decimal places, e.g. 4.25")
+
   @Valid
 
   public BigDecimal getPrice() {

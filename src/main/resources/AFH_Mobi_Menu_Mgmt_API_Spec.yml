@@ -1,0 +1,442 @@
+openapi: 3.0.3
+info:
+  title: Mobi Menu Automation
+  description: Menu used for Automating menu management by Mobi system
+  version: 0.0.1
+tags:
+  - name: token
+    description: API Token management
+  - name: menus
+    description: Customer Menu management
+  - name: menuItems
+    description: Menu Items management
+paths:
+  /v1/menus:
+    get:
+      tags:
+        - menus
+      summary: Get menus for a given customer
+      description: Get menus for a given customer
+      operationId: getMenus
+      parameters:
+        - name: customerId
+          in: query
+          description: specific customer id that the menu belongs to
+          required: true
+          explode: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'          
+        '400':
+          description: Invalid customerId value
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: No menu found for the given customerId
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - menus
+      summary: Adds a new menu to the given customer
+      description: Adds a new menu to the given customer
+      operationId: createMenu
+      parameters:
+        - name: customerId
+          in: query
+          description: specific customerId that the menu belongs to
+          required: true
+          explode: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              $ref: '#/components/schemas/CreateMenu'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                pattern: '^[A-Za-z0-9]{16}$'
+                example: ABCDabcd12345678
+        '400':
+          description: Invalid customerId or menu value
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: No customer exists for the given customerId
+      security:
+        - bearerAuth: []
+  /v1/menus/{menuId}:
+    get:
+      tags:
+        - menus
+      summary: Find menu by ID
+      description: Returns a single menu
+      operationId: getMenuById
+      parameters:
+        - name: menuId
+          in: path
+          description: ID of menu to return
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Menu not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - menus
+      summary: Delete a menu by ID
+      description: Deletes the specified menu using its ID.
+      operationId: deleteMenuById
+      parameters:
+        - name: menuId
+          in: path
+          description: ID of menu to be deleted
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      responses:
+        '204':
+          description: No Content. The item was successfully deleted.
+        '404':
+          description: Not Found. The item with the specified ID was not found.
+        '500':
+          description: Internal Server Error. An error occurred during the operation.
+      security:
+        - bearerAuth: []
+  /v1/menus/{menuId}/uploadImage:
+    post:
+      tags:
+        - menus
+      summary: uploads an image for the overall Menu
+      description: ''
+      operationId: uploadMenuFile
+      parameters:
+        - name: menuId
+          in: path
+          description: ID of menu to update
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /v1/menuItems:
+    get:
+      tags:
+        - menuItems
+      summary: Get menuItems for a given menu
+      description: Get menu items for a given menu
+      operationId: getMenuItems
+      parameters:
+        - name: menuId
+          in: query
+          description: specific menu id that the menuitems belongs to
+          required: true
+          explode: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuItem'          
+        '400':
+          description: Invalid menuId value
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: No menuitems found for the given menuId
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - menuItems
+      summary: Adds a new menuItem to the given Menu
+      description: Adds a new menuItem to the given Menu
+      operationId: createMenuItem
+      parameters:
+        - name: menuId
+          in: query
+          description: specific menu id that the menuitem belongs to
+          required: true
+          explode: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      requestBody:
+        $ref: '#/components/requestBodies/CreateMenuItemRequest'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                pattern: '^[A-Za-z0-9]{16}$'
+                example: ABCDabcd12345678
+        '400':
+          description: Invalid menuId or menuItem value
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: No menu exists for the given menuId
+      security:
+        - bearerAuth: []
+  /v1/menuItems/{menuItemId}:
+    get:
+      tags:
+        - menuItems
+      summary: Find menu item by ID
+      description: Returns a single menu item
+      operationId: getMenuItemById
+      parameters:
+        - name: menuItemId
+          in: path
+          description: ID of menuItem to return
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Menu not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - menuItems
+      summary: Delete a minuItem by ID
+      description: Deletes the specified menuItem using its ID.
+      operationId: deleteMenuItemById
+      parameters:
+        - name: menuItemId
+          in: path
+          description: ID of menuItem to be deleted
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z0-9]{16}$'
+            example: ABCDabcd12345678
+      responses:
+        '204':
+          description: No Content. The item was successfully deleted.
+        '404':
+          description: Not Found. The item with the specified ID was not found.
+        '500':
+          description: Internal Server Error. An error occurred during the operation.
+      security:
+        - bearerAuth: []
+  /v1/menuItems/{menuItemId}/uploadImage:
+    post:
+      tags:
+        - menuItems
+      summary: uploads an image for the Menu Item
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: menuItemId
+          in: path
+          description: ID of menuItem to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    Menu:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: '^[A-Za-z0-9]{16}$'
+          example: ABCDabcd12345678
+        name:
+          type: string
+          description: Name identifying the Menu
+          example: breakfast
+        description:
+          type: string
+          description: Full description of the menu 
+          example: breakfast menu for XYZ
+        menuitems:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        createdDate:
+          type: string
+          format: date-time
+        lastModifiedDate:
+          type: string
+          format: date-time
+    CreateMenu:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the menu
+          example: breakfast
+        description:
+          type: string
+          description: Full description of the menu
+          example: breakfast menu for XYZ
+        menuitems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateMenuItem'
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: '^[A-Za-z0-9]{16}$'
+          example: ABCDabcd12345678
+        name:
+          type: string
+          description: Name of the menu item
+          example: Pepsi Beverage
+        description:
+          type: string
+          description: Full description of the menu item
+          example: Ice Cold 16 oz. Diet Pepsi Beverage
+        currenncy:
+          type: string
+          description: Currency for the specified pice
+          example: USD, CAD, etc.
+        price:
+          type: number
+          multipleOf: 0.01  # up to 2 decimal places, e.g. 4.25
+          description: up to 2 decimal places, e.g. 4.25
+          example: 4.25
+        createdDate:
+          type: string
+          format: date-time
+        lastModifiedDate:
+          type: string
+          format: date-time
+    CreateMenuItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the menu item
+          example: Pepsi Beverage
+        description:
+          type: string
+          description: Full description of the menu item
+          example: Ice Cold 16 oz. Diet Pepsi Beverage
+        currenncy:
+          type: string
+          description: Currency for the specified pice
+          example: USD, CAD, etc.
+        price:
+          type: number
+          multipleOf: 0.01  # up to 2 decimal places, e.g. 4.25
+          description: up to 2 decimal places, e.g. 4.25
+          example: 4.25
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+  requestBodies:
+    CreateMenuItemRequest:
+      description: MenuItem object that needs to be added to the menu
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateMenuItem'
+    CreateMenuRequest:
+      description: Menu object that needs to be added to the customer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateMenu'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid

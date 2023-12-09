@@ -10,7 +10,12 @@ import com.pepsico.model.CreateMenuItem;
 import com.pepsico.model.Menu;
 import com.pepsico.model.MenuItem;
 import com.pepsico.model.ModelApiResponse;
-// import io.swagger.annotations.*;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +25,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 @Validated
-// @Api(value = "v1", description = "the v1 API")
+@Tag(name = "v1", description = "the v1 API")
 public interface V1Api {
 
     default V1ApiDelegate getDelegate() {
@@ -40,16 +45,21 @@ public interface V1Api {
      *         or Access token is missing or invalid (status code 401)
      *         or No customer exists for the given customerId (status code 404)
      */
-    
+    @Operation(description = "Adds a new menu to the given customer", method = "createMenu", 
+    summary = "Adds a new menu to the given customer",
+        tags={ "menus", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid customerId or menu value"),
+        @ApiResponse(responseCode = "401", description = "Access token is missing or invalid"),
+        @ApiResponse(responseCode = "404", description = "No customer exists for the given customerId") })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/v1/menus",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<String> createMenu(
-        String customerId,
-        CreateMenu createMenu) {
+    default ResponseEntity<String> createMenu(@Parameter(description = "specific customerId that the menu belongs to", required = true) @Valid @RequestParam(value = "customerId", required = true) String customerId,@Parameter(description = "") @Valid @RequestBody(required = false) CreateMenu createMenu) {
         return getDelegate().createMenu(customerId, createMenu);
     }
 
@@ -65,24 +75,19 @@ public interface V1Api {
      *         or Access token is missing or invalid (status code 401)
      *         or No menu exists for the given menuId (status code 404)
      */
-    // @ApiOperation(value = "Adds a new menuItem to the given Menu", nickname = "createMenuItem", notes = "Adds a new menuItem to the given Menu", response = String.class, authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menuItems", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = String.class),
-    //     @ApiResponse(code = 400, message = "Invalid menuId or menuItem value"),
-    //     @ApiResponse(code = 401, message = "Access token is missing or invalid"),
-    //     @ApiResponse(code = 404, message = "No menu exists for the given menuId") })
+    @Operation(description = "Adds a new menuItem to the given Menu", operationId = "createMenuItem", summary = "Adds a new menuItem to the given Menu", tags={ "menuItems", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid menuId or menuItem value"),
+        @ApiResponse(responseCode = "401", description = "Access token is missing or invalid"),
+        @ApiResponse(responseCode = "404", description = "No menu exists for the given menuId") })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/v1/menuItems",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<String> createMenuItem(
-        String menuId,
-        CreateMenuItem createMenuItem) {
+    default ResponseEntity<String> createMenuItem( @Parameter(description = "specific menu id that the menuitem belongs to", required = true) @Valid @RequestParam(value = "menuId", required = true) String menuId,@Parameter(description = "MenuItem object that needs to be added to the menu") @Valid @RequestBody(required = false) CreateMenuItem createMenuItem) {
         return getDelegate().createMenuItem(menuId, createMenuItem);
     }
 
@@ -96,20 +101,16 @@ public interface V1Api {
      *         or Not Found. The item with the specified ID was not found. (status code 404)
      *         or Internal Server Error. An error occurred during the operation. (status code 500)
      */
-    // @ApiOperation(value = "Delete a menu by ID", nickname = "deleteMenuById", notes = "Deletes the specified menu using its ID.", authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menus", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 204, message = "No Content. The item was successfully deleted."),
-    //     @ApiResponse(code = 404, message = "Not Found. The item with the specified ID was not found."),
-    //     @ApiResponse(code = 500, message = "Internal Server Error. An error occurred during the operation.") })
+    @Operation(description = "Delete a menu by ID", operationId = "deleteMenuById", summary = "Deletes the specified menu using its ID.", tags={ "menus", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "204", description = "No Content. The item was successfully deleted."),
+        @ApiResponse(responseCode = "404", description = "Not Found. The item with the specified ID was not found."),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error. An error occurred during the operation.") })
     @RequestMapping(
         method = RequestMethod.DELETE,
         value = "/v1/menus/{menuId}"
     )
-    default ResponseEntity<Void> deleteMenuById(
-         String menuId) {
+    default ResponseEntity<Void> deleteMenuById( @Parameter(description = "ID of menu to be deleted", required = true) @PathVariable("menuId") String menuId) {
         return getDelegate().deleteMenuById(menuId);
     }
 
@@ -123,19 +124,16 @@ public interface V1Api {
      *         or Not Found. The item with the specified ID was not found. (status code 404)
      *         or Internal Server Error. An error occurred during the operation. (status code 500)
      */
-    // @ApiOperation(value = "Delete a minuItem by ID", nickname = "deleteMenuItemById", notes = "Deletes the specified menuItem using its ID.", authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menuItems", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 204, message = "No Content. The item was successfully deleted."),
-    //     @ApiResponse(code = 404, message = "Not Found. The item with the specified ID was not found."),
-    //     @ApiResponse(code = 500, message = "Internal Server Error. An error occurred during the operation.") })
+    @Operation(description = "Delete a minuItem by ID", operationId = "deleteMenuItemById", summary = "Deletes the specified menuItem using its ID.", tags={ "menuItems", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "204", description = "No Content. The item was successfully deleted."),
+        @ApiResponse(responseCode = "404", description = "Not Found. The item with the specified ID was not found."),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error. An error occurred during the operation.") })
     @RequestMapping(
         method = RequestMethod.DELETE,
         value = "/v1/menuItems/{menuItemId}"
     )
-    default ResponseEntity<Void> deleteMenuItemById(String menuItemId) {
+    default ResponseEntity<Void> deleteMenuItemById( @Parameter(description = "ID of menuItem to be deleted", required = true) @PathVariable("menuItemId") String menuItemId) {
         return getDelegate().deleteMenuItemById(menuItemId);
     }
 
@@ -149,20 +147,17 @@ public interface V1Api {
      *         or Invalid ID supplied (status code 400)
      *         or Menu not found (status code 404)
      */
-    // @ApiOperation(value = "Find menu by ID", nickname = "getMenuById", notes = "Returns a single menu", response = Menu.class, authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menus", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = Menu.class),
-    //     @ApiResponse(code = 400, message = "Invalid ID supplied"),
-    //     @ApiResponse(code = 404, message = "Menu not found") })
+    @Operation(description = "Find menu by ID", operationId = "getMenuById", summary = "Returns a single menu", tags={ "menus", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+        @ApiResponse(responseCode = "404", description = "Menu not found") })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/v1/menus/{menuId}",
         produces = { "application/json" }
     )
-    default ResponseEntity<Menu> getMenuById(String menuId) {
+    default ResponseEntity<Menu> getMenuById( @Parameter(description = "ID of menu to return", required = true) @PathVariable("menuId") String menuId) {
         return getDelegate().getMenuById(menuId);
     }
 
@@ -176,20 +171,17 @@ public interface V1Api {
      *         or Invalid ID supplied (status code 400)
      *         or Menu not found (status code 404)
      */
-    // @ApiOperation(value = "Find menu item by ID", nickname = "getMenuItemById", notes = "Returns a single menu item", response = MenuItem.class, authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menuItems", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = MenuItem.class),
-    //     @ApiResponse(code = 400, message = "Invalid ID supplied"),
-    //     @ApiResponse(code = 404, message = "Menu not found") })
+    @Operation(description = "Find menu item by ID", operationId = "getMenuItemById", summary = "Returns a single menu item", tags={ "menuItems", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+        @ApiResponse(responseCode = "404", description = "Menu not found") })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/v1/menuItems/{menuItemId}",
         produces = { "application/json" }
     )
-    default ResponseEntity<MenuItem> getMenuItemById( String menuItemId) {
+    default ResponseEntity<MenuItem> getMenuItemById( @Parameter(description = "ID of menuItem to return", required = true) @PathVariable("menuItemId") String menuItemId) {
         return getDelegate().getMenuItemById(menuItemId);
     }
 
@@ -204,21 +196,18 @@ public interface V1Api {
      *         or Access token is missing or invalid (status code 401)
      *         or No menuitems found for the given menuId (status code 404)
      */
-    // @ApiOperation(value = "Get menuItems for a given menu", nickname = "getMenuItems", notes = "Get menu items for a given menu", response = MenuItem.class, responseContainer = "List", authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menuItems", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = MenuItem.class, responseContainer = "List"),
-    //     @ApiResponse(code = 400, message = "Invalid menuId value"),
-    //     @ApiResponse(code = 401, message = "Access token is missing or invalid"),
-    //     @ApiResponse(code = 404, message = "No menuitems found for the given menuId") })
+    @Operation(description = "Get menuItems for a given menu", operationId  = "getMenuItems", summary = "Get menu items for a given menu", tags={ "menuItems", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid menuId value"),
+        @ApiResponse(responseCode = "401", description = "Access token is missing or invalid"),
+        @ApiResponse(responseCode = "404", description = "No menuitems found for the given menuId") })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/v1/menuItems",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<MenuItem>> getMenuItems(String menuId) {
+    default ResponseEntity<List<MenuItem>> getMenuItems( @Parameter(description = "specific menu id that the menuitems belongs to", required = true) @Valid @RequestParam(value = "menuId", required = true) String menuId) {
         return getDelegate().getMenuItems(menuId);
     }
 
@@ -233,21 +222,18 @@ public interface V1Api {
      *         or Access token is missing or invalid (status code 401)
      *         or No menu found for the given customerId (status code 404)
      */
-    // @ApiOperation(value = "Get menus for a given customer", nickname = "getMenus", notes = "Get menus for a given customer", response = Menu.class, responseContainer = "List", authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menus", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = Menu.class, responseContainer = "List"),
-    //     @ApiResponse(code = 400, message = "Invalid customerId value"),
-    //     @ApiResponse(code = 401, message = "Access token is missing or invalid"),
-    //     @ApiResponse(code = 404, message = "No menu found for the given customerId") })
+    @Operation(description = "Get menus for a given customer", operationId = "getMenus", summary = "Get menus for a given customer", tags={ "menus", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation"),
+        @ApiResponse(responseCode = "400", description = "Invalid customerId value"),
+        @ApiResponse(responseCode = "401", description = "Access token is missing or invalid"),
+        @ApiResponse(responseCode = "404", description = "No menu found for the given customerId") })
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/v1/menus",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<Menu>> getMenus(String customerId) {
+    default ResponseEntity<List<Menu>> getMenus( @Parameter(description = "specific customer id that the menu belongs to", required = true) @Valid @RequestParam(value = "customerId", required = true) String customerId) {
         return getDelegate().getMenus(customerId);
     }
 
@@ -259,19 +245,16 @@ public interface V1Api {
      * @param body  (optional)
      * @return successful operation (status code 200)
      */
-    // @ApiOperation(value = "uploads an image for the Menu Item", nickname = "uploadFile", notes = "", response = ModelApiResponse.class, authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menuItems", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = ModelApiResponse.class) })
+    @Operation(description = "uploads an image for the Menu Item", operationId = "uploadFile", summary = "", tags={ "menuItems", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation") })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/v1/menuItems/{menuItemId}/uploadImage",
         produces = { "application/json" },
         consumes = { "application/octet-stream" }
     )
-    default ResponseEntity<ModelApiResponse> uploadFile(Long menuItemId, org.springframework.core.io.Resource body) {
+    default ResponseEntity<ModelApiResponse> uploadFile(@Parameter(description = "ID of menuItem to update", required = true) @PathVariable("menuItemId") Long menuItemId,@Parameter(description = "") @Valid @RequestBody(required = false) org.springframework.core.io.Resource body) {
         // return getDelegate().uploadFile(menuItemId, body);
         return null;
     }
@@ -284,20 +267,16 @@ public interface V1Api {
      * @param body  (optional)
      * @return successful operation (status code 200)
      */
-    // @ApiOperation(value = "uploads an image for the overall Menu", nickname = "uploadMenuFile", notes = "", response = ModelApiResponse.class, authorizations = {
-        
-    //     @Authorization(value = "bearerAuth")
-    //      }, tags={ "menus", })
-    // @ApiResponses(value = { 
-    //     @ApiResponse(code = 200, message = "successful operation", response = ModelApiResponse.class) })
+    @Operation(description = "uploads an image for the overall Menu", operationId  = "uploadMenuFile", summary = "", tags={ "menus", })
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "successful operation") })
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/v1/menus/{menuId}/uploadImage",
         produces = { "application/json" },
         consumes = { "application/octet-stream" }
     )
-    default ResponseEntity<ModelApiResponse> uploadMenuFile( String menuId,
-     org.springframework.core.io.Resource body) {
+    default ResponseEntity<ModelApiResponse> uploadMenuFile( @Parameter(description = "ID of menu to update", required = true) @PathVariable("menuId") String menuId,@Parameter(description  = "") @Valid @RequestBody(required = false) org.springframework.core.io.Resource body) {
         // return getDelegate().uploadMenuFile(menuId, body);
         return null;
     }

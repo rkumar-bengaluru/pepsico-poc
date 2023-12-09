@@ -1,4 +1,4 @@
-package com.javainuse.model;
+package com.pepsico.model;
 
 public class Employee {
 	private String empId;

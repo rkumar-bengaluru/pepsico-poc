@@ -3,18 +3,18 @@ package com.pepsico.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
+import com.pepsico.model.MenuItem;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Menu
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 public class Menu   {
   @JsonProperty("id")
   private String id;
@@ -46,7 +46,7 @@ public class Menu   {
    * Get id
    * @return id
   */
-
+  @Schema(example = "ABCDabcd12345678", description = "")
 
 @Pattern(regexp = "^[A-Za-z0-9]{16}$") 
   public String getId() {
@@ -66,7 +66,7 @@ public class Menu   {
    * Name identifying the Menu
    * @return name
   */
-
+  @Schema(example = "breakfast", description = "Name identifying the Menu")
 
 
   public String getName() {
@@ -86,7 +86,7 @@ public class Menu   {
    * Full description of the menu
    * @return description
   */
-
+  @Schema(example = "breakfast menu for XYZ", description = "Full description of the menu")
 
 
   public String getDescription() {
@@ -114,7 +114,7 @@ public class Menu   {
    * Get menuitems
    * @return menuitems
   */
-  // @ApiModelProperty(value = "")
+  @Schema(description = "")
 
   @Valid
 
@@ -135,7 +135,7 @@ public class Menu   {
    * Get createdDate
    * @return createdDate
   */
-
+  @Schema(description = "")
 
   @Valid
 
@@ -156,7 +156,7 @@ public class Menu   {
    * Get lastModifiedDate
    * @return lastModifiedDate
   */
-
+  @Schema(description = "")
 
   @Valid
 

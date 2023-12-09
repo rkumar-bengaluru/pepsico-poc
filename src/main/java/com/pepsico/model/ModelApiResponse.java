@@ -3,16 +3,14 @@ package com.pepsico.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-// import io.swagger.annotations.ApiModel;
-// import io.swagger.annotations.ApiModelProperty;
-// import org.openapitools.jackson.nullable.JsonNullable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * ModelApiResponse
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 public class ModelApiResponse   {
   @JsonProperty("code")
   private Integer code;
@@ -32,7 +30,7 @@ public class ModelApiResponse   {
    * Get code
    * @return code
   */
-  // @ApiModelProperty(value = "")
+  @Schema(description = "")
 
 
   public Integer getCode() {
@@ -52,7 +50,7 @@ public class ModelApiResponse   {
    * Get type
    * @return type
   */
-  // @ApiModelProperty(value = "")
+  @Schema(description = "")
 
 
   public String getType() {
@@ -72,7 +70,7 @@ public class ModelApiResponse   {
    * Get message
    * @return message
   */
-  // @ApiModelProperty(value = "")
+  @Schema(description = "")
 
 
   public String getMessage() {

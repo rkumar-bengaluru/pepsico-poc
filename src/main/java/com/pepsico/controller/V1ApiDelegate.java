@@ -5,22 +5,24 @@ import com.pepsico.model.CreateMenuItem;
 import com.pepsico.model.Menu;
 import com.pepsico.model.MenuItem;
 import com.pepsico.model.ModelApiResponse;
-// import io.swagger.annotations.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 
 /**
  * A delegate to be called by the {@link V1ApiController}}.
  * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-08T12:58:27.435673+05:30[Asia/Calcutta]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-12-09T11:41:14.532834100+05:30[Asia/Calcutta]")
 public interface V1ApiDelegate {
 
     default Optional<NativeWebRequest> getRequest() {
@@ -131,8 +133,33 @@ public interface V1ApiDelegate {
                 }
             }
         });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+         Menu m = new Menu();
+        m.setId("ABCDabcd12345678");
+        m.setName("breakfast");
+        m.setDescription("breakfast menu for XYZ");
+        m.createdDate(OffsetDateTime.now());
+        m.setLastModifiedDate(OffsetDateTime.now());
+        
+        
+        m.setMenuitems(getDummyData());
+        
+        return ResponseEntity.ok(m);
 
+    }
+    public default List<MenuItem> getDummyData() {
+        List<MenuItem> ml = new java.util.ArrayList<>();
+        for (int i =0; i < 10; i++) {
+            MenuItem o = new MenuItem();
+            o.id("ABCDabcd12345678" + i);
+            o.name("Pepsi Beverage");
+            o.description("Ice Cold 16 oz. Diet Pepsi Beverage");
+            o.price( new BigDecimal("4.25"));
+            o.currenncy("USD");
+            o.createdDate(OffsetDateTime.now());
+            o.setLastModifiedDate(OffsetDateTime.now());
+            ml.add(o);
+        }
+        return ml;
     }
 
     /**
