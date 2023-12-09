@@ -52,6 +52,7 @@ public interface V1ApiDelegate {
                 }
             }
         });
+        System.out.println("creating customer " + customerId);
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

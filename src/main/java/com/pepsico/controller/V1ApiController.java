@@ -11,7 +11,7 @@ public class V1ApiController implements V1Api {
     private final V1ApiDelegate delegate;
 
     public V1ApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) V1ApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new V1ApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new V1ApiService() {});
     }
 
     @Override
